@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeNote 知识库</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="知识库导航">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 48 48" role="img">
+              <path d="M10 12c0-3 2-5 5-5h18c3 0 5 2 5 5v24c0 3-2 5-5 5H15c-3 0-5-2-5-5V12Z" />
+              <path d="M17 16h14M17 23h10M17 30h14" />
+            </svg>
+          </div>
+          <div>
+            <strong>CodeNote</strong>
+            <span>学习知识库</span>
+          </div>
+        </div>
+
+        <label class="search-box">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+          <input id="searchInput" type="search" placeholder="搜索标题、正文、标签" autocomplete="off" />
+        </label>
+
+        <nav class="nav-group" aria-label="视图筛选">
+          <button class="nav-item active" data-view="all" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M4 5h16M4 12h16M4 19h16"></path>
+            </svg>
+            <span>全部笔记</span>
+            <b id="allCount">0</b>
+          </button>
+          <button class="nav-item" data-view="pinned" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m12 3 2 6 6 .5-4.6 4 1.4 6-4.8-3.2-4.8 3.2 1.4-6L4 9.5 10 9l2-6Z"></path>
+            </svg>
+            <span>置顶</span>
+            <b id="pinnedCount">0</b>
+          </button>
+          <button class="nav-item" data-view="review" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M5 4h11l3 3v13H5V4Z"></path>
+              <path d="M9 13h6M9 17h4M16 4v4h4"></path>
+            </svg>
+            <span>待复习</span>
+            <b id="reviewCount">0</b>
+          </button>
+          <button class="nav-item" data-view="archived" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M4 7h16v13H4V7Z"></path>
+              <path d="M3 4h18v3H3V4ZM9 11h6"></path>
+            </svg>
+            <span>归档</span>
+            <b id="archivedCount">0</b>
+          </button>
+        </nav>
+
+        <section class="sidebar-section">
+          <div class="section-heading">
+            <span>分类</span>
+            <button id="addCategoryBtn" class="icon-button" type="button" title="新建分类" aria-label="新建分类">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+            </button>
+          </div>
+          <div id="categoryList" class="category-list"></div>
+        </section>
+
+        <section class="sidebar-section">
+          <div class="section-heading">
+            <span>标签</span>
+          </div>
+          <div id="tagCloud" class="tag-cloud"></div>
+        </section>
+
+        <div class="sidebar-actions">
+          <button id="exportBtn" class="ghost-button" type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 3v12"></path>
+              <path d="m7 10 5 5 5-5"></path>
+              <path d="M5 21h14"></path>
+            </svg>
+            <span>导出</span>
+          </button>
+          <label class="ghost-button file-action">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 21V9"></path>
+              <path d="m7 14 5-5 5 5"></path>
+              <path d="M5 3h14"></path>
+            </svg>
+            <span>导入</span>
+            <input id="importInput" type="file" accept="application/json" />
+          </label>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p id="dateLine" class="date-line"></p>
+            <h1>知识记录台</h1>
+          </div>
+          <div class="topbar-actions">
+            <button id="themeToggle" class="icon-button" type="button" title="切换主题" aria-label="切换主题">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"></path>
+              </svg>
+            </button>
+            <button id="newNoteBtn" class="primary-button" type="button">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+              <span>新笔记</span>
+            </button>
+          </div>
+        </header>
+
+        <section class="quote-panel" aria-label="今日箴言">
+          <div class="quote-kicker">今日箴言</div>
+          <blockquote id="quoteText"></blockquote>
+          <div class="quote-foot">
+            <cite id="quoteSource"></cite>
+            <button id="nextQuoteBtn" class="ghost-button compact" type="button">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M21 12a9 9 0 1 1-2.6-6.4"></path>
+                <path d="M21 3v6h-6"></path>
+              </svg>
+              <span>换一句</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="dashboard" aria-label="知识库统计">
+          <div class="stat-card">
+            <span>总笔记</span>
+            <strong id="statNotes">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>本周更新</span>
+            <strong id="statWeek">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>截图附件</span>
+            <strong id="statImages">0</strong>
+          </div>
+          <div class="stat-card">
+            <span>复习中</span>
+            <strong id="statReview">0</strong>
+          </div>
+        </section>
+
+        <div class="content-grid">
+          <section class="notes-panel" aria-label="笔记列表">
+            <div class="panel-toolbar">
+              <div class="segmented" role="group" aria-label="排序">
+                <button class="active" data-sort="updatedAt" type="button">最近</button>
+                <button data-sort="createdAt" type="button">创建</button>
+                <button data-sort="title" type="button">标题</button>
+              </div>
+              <button id="clearFiltersBtn" class="icon-button" type="button" title="清除筛选" aria-label="清除筛选">
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M4 4 20 20M20 4 4 20"></path>
+                </svg>
+              </button>
+            </div>
+            <div id="activeFilter" class="active-filter"></div>
+            <div id="notesList" class="notes-list"></div>
+          </section>
+
+          <section class="editor-panel" aria-label="笔记编辑器">
+            <form id="noteForm" class="note-form">
+              <div class="editor-head">
+                <textarea id="titleInput" class="title-input" rows="1" placeholder="标题" spellcheck="false"></textarea>
+                <div class="editor-actions">
+                  <button id="pinBtn" class="icon-button" type="button" title="置顶" aria-label="置顶">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                      <path d="m12 3 2 6 6 .5-4.6 4 1.4 6-4.8-3.2-4.8 3.2 1.4-6L4 9.5 10 9l2-6Z"></path>
+                    </svg>
+                  </button>
+                  <button id="archiveBtn" class="icon-button" type="button" title="归档" aria-label="归档">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                      <path d="M4 7h16v13H4V7Z"></path>
+                      <path d="M3 4h18v3H3V4ZM9 11h6"></path>
+                    </svg>
+                  </button>
+                  <button id="deleteNoteBtn" class="icon-button danger" type="button" title="删除" aria-label="删除">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                      <path d="M4 7h16"></path>
+                      <path d="M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="meta-grid">
+                <label>
+                  <span>分类</span>
+                  <select id="categorySelect"></select>
+                </label>
+                <label>
+                  <span>状态</span>
+                  <select id="statusSelect">
+                    <option value="draft">草稿</option>
+                    <option value="learning">学习中</option>
+                    <option value="review">待复习</option>
+                    <option value="mastered">已掌握</option>
+                  </select>
+                </label>
+                <label>
+                  <span>难度</span>
+                  <select id="levelSelect">
+                    <option value="1">入门</option>
+                    <option value="2">普通</option>
+                    <option value="3">重点</option>
+                    <option value="4">困难</option>
+                  </select>
+                </label>
+                <label>
+                  <span>来源</span>
+                  <input id="sourceInput" type="text" placeholder="课程、文档或链接" autocomplete="off" />
+                </label>
+              </div>
+
+              <label class="tags-field">
+                <span>标签</span>
+                <input id="tagsInput" type="text" placeholder="JavaScript, CSS, 算法" autocomplete="off" />
+              </label>
+
+              <div class="editor-tabs" role="tablist" aria-label="编辑模式">
+                <button class="active" data-mode="write" type="button">编辑</button>
+                <button data-mode="preview" type="button">预览</button>
+              </div>
+
+              <textarea id="bodyInput" class="body-input" spellcheck="false" placeholder="记录知识点、代码、问题和总结"></textarea>
+              <div id="previewPane" class="preview-pane hidden"></div>
+
+              <div class="attachment-bar">
+                <label class="ghost-button file-action compact">
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M4 17 9 12l4 4 2-2 5 5"></path>
+                    <path d="M4 5h16v14H4V5Z"></path>
+                    <circle cx="8" cy="9" r="1.5"></circle>
+                  </svg>
+                  <span>图片</span>
+                  <input id="imageInput" type="file" accept="image/*" multiple />
+                </label>
+                <span id="saveState" class="save-state">已保存</span>
+              </div>
+
+              <div id="attachments" class="attachments"></div>
+            </form>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="categoryDialog" class="dialog-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="categoryDialogTitle">
+      <div class="dialog">
+        <h2 id="categoryDialogTitle">分类</h2>
+        <label>
+          <span>名称</span>
+          <input id="categoryNameInput" type="text" autocomplete="off" />
+        </label>
+        <label>
+          <span>颜色</span>
+          <input id="categoryColorInput" type="color" />
+        </label>
+        <div class="dialog-actions">
+          <button id="deleteCategoryBtn" class="ghost-button danger-button" type="button">删除</button>
+          <button id="cancelCategoryBtn" class="ghost-button" type="button">取消</button>
+          <button id="saveCategoryBtn" class="primary-button" type="button">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
